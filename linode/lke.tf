@@ -19,10 +19,16 @@ resource "linode_lke_cluster" "lke_cluster" {
 
   pool {
     type  = "g6-standard-1"
-    count = 3
+    count = 1
   }
 
   control_plane {
     high_availability = true
   }
+}
+
+
+resource "local_file" "kubeconfig" {
+  content_base64  = linode_lke_cluster.lke_cluster.kubeconfig
+  filename = "${path.cwd}/k8s/linode-prod-lke-kubeconfig.yaml"
 }
